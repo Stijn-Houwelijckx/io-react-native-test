@@ -1,18 +1,40 @@
-import { Ionicons } from '@expo/vector-icons'
-import { Pressable, Text, TextInput, View } from 'react-native'
+import { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import { Pressable, Text, TextInput, View } from 'react-native';
 
-export const AddWeatherLocation = () => {
-    return <View className="p-4 bg-white mx-4 rounded-lg gap-2">
-        <Text className="font-bold">Add Location</Text>
-        <View className="bg-gray-200 rounded-lg p-4 flex-row gap-2">
-            <TextInput placeholder="Location" className="bg-gray-200 grow shrink" />
-            <Pressable className="active:opacity-50">
-                <Ionicons name="locate" size={24} color="black" />
-            </Pressable>
-        </View>
-        <Pressable className="flex-row ml-auto items-center bg-white active:opacity-50 gap-1">
-            <Text className="font-bold text-black rounded-lg">Add</Text>
-            <Ionicons name="add" size={24} color="black" />
-        </Pressable>
-    </View>
+interface AddWeatherLocationProps {
+  onAddClick: (location: string) => void;
+  location: string;
+  onCurrentLocationClick: () => void;
 }
+
+export const AddWeatherLocation = ({
+  onAddClick,
+  location,
+  onCurrentLocationClick,
+}: AddWeatherLocationProps) => {
+  const [inputValue, setInputValue] = useState(location);
+
+  return (
+    <View className="mx-4 gap-2 rounded-lg bg-white p-4">
+      <Text className="font-bold">Add Location</Text>
+      <View className="flex-row gap-2 rounded-lg bg-gray-200 p-4">
+        <TextInput
+          placeholder="Location"
+          className="shrink grow bg-gray-200"
+          value={inputValue}
+          onChangeText={setInputValue}
+        />
+        <Pressable className="active:opacity-50" onPress={onCurrentLocationClick}>
+          <Ionicons name="locate" size={24} color="black" />
+        </Pressable>
+      </View>
+      <Pressable
+        className="ml-auto flex-row items-center gap-1 bg-white active:opacity-50"
+        onPress={() => onAddClick(inputValue)}>
+        <Text className="rounded-lg font-bold text-black">Add</Text>
+        <Ionicons name="add" size={24} color="black" />
+      </Pressable>
+    </View>
+  );
+};
